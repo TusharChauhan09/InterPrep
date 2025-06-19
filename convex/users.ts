@@ -20,7 +20,6 @@ export const syncUser = mutation({
   }
 });
 
-
 export const getUsers = query({
     handler: async (ctx)=>{
         const identity = await ctx.auth.getUserIdentity();
@@ -29,7 +28,6 @@ export const getUsers = query({
         return users;
     }
 })
-
 
 export const getUserByClerkId = query({
   args: { clerkId: v.string() },
