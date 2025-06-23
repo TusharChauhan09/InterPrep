@@ -1,7 +1,7 @@
 "use client";
 
-import { useTheme } from "next-themes";
 import { ThemeToggle } from "./ThemeToggle";
+import { useThemeMode } from "@/hooks/useThemeMode";
 import { Button } from "./ui/button";
 import {
   SignedIn,
@@ -17,7 +17,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 const NavBar = () => {
-  const { theme } = useTheme();
+  const theme = useThemeMode();
   return (
     <nav className=" mx-4 my-2 border-2 rounded-xl  ">
       <div className="flex h-15 justify-between item-center px-4 conatiner mx-auto">
@@ -36,7 +36,7 @@ const NavBar = () => {
         {/* right : functions */}
         <div className="flex items-center gap-5">
           <SignedIn>
-            <div className=" flex items-center gap-4 ">
+            <div className=" flex items-center gap-5 ">
               <DashboardBtn />
               <UserButton />
             </div>
