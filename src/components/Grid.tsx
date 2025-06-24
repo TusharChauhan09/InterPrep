@@ -13,19 +13,19 @@ import { Github } from "lucide-react";
 export function Grid() {
   const theme = useThemeMode();
   return (
-    <div className="relative flex min-h-110 w-full items-center justify-center overflow-hidden rounded-lg  p-20">
+    <div className="relative flex max-h-110 w-full items-center justify-center overflow-hidden rounded-lg  p-20">
       {/* <p className="z-10 whitespace-pre-wrap text-center text-5xl font-medium tracking-tighter text-black dark:text-white">
       </p> */}
-      <div className="relavtive flex flex-col items-center"> 
+      <div className="relavtive flex flex-col items-center "> 
         <div className="">
           {theme === "dark" && (
-            <Image src={dark} alt={"dark logo"} className="size-120" />
+            <Image src={dark} alt={"dark logo"} className="object-contain" width={480} height={480}  />
           )}
           {theme === "light" && (
-            <Image src={light} alt={"light logo"} className="size-120" />
+            <Image src={light} alt={"light logo"} className="object-contain" width={480} height={480} />
           )}
         </div>
-        <div className=" absolute bottom-50 flex space-x-5 ">
+        <div className=" absolute bottom-[25%] flex space-x-5 ">
           <Button className=" text-md p-5  font-bold rounded-2xl border-2 " >Get Started</Button>
           <Link href={'https://github.com/TusharChauhan09/InterPrep'}>
           <Button className=" text-md p-5 font-bold rounded-2xl hover: cursor-pointer " >Repository 
