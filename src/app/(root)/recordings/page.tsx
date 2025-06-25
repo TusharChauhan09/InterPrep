@@ -1,7 +1,7 @@
 const RecordingPage = () => {
   return (
     <div>
-      
+      recording
     </div>
   )
 }
