@@ -8,6 +8,8 @@ import ConvexClerkProvider from "@/components/providers/ConvexClerkProvider";
 
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 
+import { Toaster } from "react-hot-toast";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -47,6 +49,7 @@ export default function RootLayout({
               </main>
             </div>
           </ThemeProvider>
+          <Toaster />
         </body>
       </html>
     </ConvexClerkProvider>
