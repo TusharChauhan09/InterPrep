@@ -3,12 +3,27 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ResizablePanel, ResizablePanelGroup, ResizableHandle } from "./ui/resizable";
 // import CodeEditor from "./CodeEditor";
-import FloatingVideo from "./FloatingVideo";
+import FloatingVideo from 
+"./FloatingVideo";
+import { CallingState, useCallStateHooks } from "@stream-io/video-react-sdk";
+import { LoaderIcon } from "lucide-react";
+
 
 function MeetingRoom() {
   const router = useRouter();
   const [layout, setLayout] = useState<"grid" | "speaker">("grid");
   const [showParticipants, setShowParticipants] = useState(false);
+
+  //
+  const { useCallCallingState } = useCallStateHooks();
+  const callingState = useCallCallingState();
+  if( callingState !== CallingState.JOINED){
+    return (
+    <div className="h-[calc(100vh-4rem-1px)] flex items-center justify-center">
+      <LoaderIcon className="h-8 w-8 animate-spin text-muted-foreground" />
+    </div>
+  );
+  }
 
   return (
     <div className="h-[calc(100vh-5rem)] relative overflow-y-hidden  ">
@@ -23,7 +38,7 @@ function MeetingRoom() {
       </div>
       <ResizablePanelGroup direction="horizontal">
         <ResizablePanel defaultSize={40} minSize={25} maxSize={100} className="relative">
-          {/* VIDEO LAYOUT & CONTROLS */}hrsf
+          
         </ResizablePanel>
 
         <ResizableHandle withHandle />

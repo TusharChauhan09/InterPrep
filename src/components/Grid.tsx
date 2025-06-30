@@ -9,9 +9,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "./ui/button";
 import { Github } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export function Grid() {
+
+  const router = useRouter();
+
   const theme = useThemeMode();
+
   return (
     <div className="relative flex max-h-110 w-full items-center justify-center overflow-hidden rounded-lg  p-20">
       {/* <p className="z-10 whitespace-pre-wrap text-center text-5xl font-medium tracking-tighter text-black dark:text-white">
@@ -26,7 +31,7 @@ export function Grid() {
           )}
         </div>
         <div className=" absolute bottom-[25%] flex space-x-5 ">
-          <Button className=" text-md p-5  font-bold rounded-2xl border-2 " >Get Started</Button>
+          <Button className=" text-md p-5  font-bold rounded-2xl border-2 " onClick={()=>router.push('/arena')}>Get Started</Button>
           <Link href={'https://github.com/TusharChauhan09/InterPrep'}>
           <Button className=" text-md p-5 font-bold rounded-2xl hover: cursor-pointer " >Repository 
             <Github  className=" size-[10] "/>
