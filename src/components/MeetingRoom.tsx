@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ResizablePanel, ResizablePanelGroup, ResizableHandle } from "./ui/resizable";
-// import CodeEditor from "./CodeEditor";
+import CodeEditor from "./CodeEditor";
 import FloatingVideo from 
 "./FloatingVideo";
 import { CallingState, useCallStateHooks } from "@stream-io/video-react-sdk";
@@ -36,17 +36,7 @@ function MeetingRoom() {
             router={router}
           />
       </div>
-      <ResizablePanelGroup direction="horizontal">
-        <ResizablePanel defaultSize={40} minSize={25} maxSize={100} className="relative">
-          
-        </ResizablePanel>
-
-        <ResizableHandle withHandle />
-
-        <ResizablePanel defaultSize={60} minSize={25}>
-          {/* <CodeEditor /> */}
-        </ResizablePanel>
-      </ResizablePanelGroup>
+      <CodeEditor />
     </div>
   );
 }

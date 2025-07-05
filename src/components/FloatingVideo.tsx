@@ -13,7 +13,7 @@ import {
   SpeakerLayout,
   CallParticipantsList,
 } from "@stream-io/video-react-sdk";
-// import EndCallButton from "./EndCallButton";
+import EndCallButton from "./EndCallButton";
 
 interface FloatingVideoProps {
   layout: "grid" | "speaker";
@@ -102,8 +102,7 @@ const FloatingVideo: React.FC<FloatingVideoProps> = ({
               >
                 <UsersIcon className="size-4" />
               </Button>
-                 {/* <EndCallButton /> */}
-                 gfasfasfafaf
+                 <EndCallButton />
             </div>
           </div>
         </div>

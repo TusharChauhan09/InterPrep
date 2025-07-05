@@ -44,8 +44,8 @@ const MeetingSetup = ({ onSetupComplete }: { onSetupComplete: () => void }) => {
 
             {/* preview container */}
             <div className="mt-4 flex-1 min-h-[400px] rounded-xl overflow-hidden bg-muted/50 border relative">
-              <div className="absolute inset-0">
-                <VideoPreview className=" w-full min-h-full " />
+              <div className="absolute w-full inset-0">
+                <VideoPreview className=" min-w-full min-h-full " />
               </div>
             </div>
           </Card>
