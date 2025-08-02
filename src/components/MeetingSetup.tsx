@@ -1,67 +1,65 @@
-'use client';
-
 import { DeviceSettings, useCall, VideoPreview } from "@stream-io/video-react-sdk";
 import { useEffect, useState } from "react";
 import { Card } from "./ui/card";
-import { Switch } from "./ui/switch";
 import { CameraIcon, MicIcon, SettingsIcon } from "lucide-react";
+import { Switch } from "./ui/switch";
 import { Button } from "./ui/button";
 
-const MeetingSetup = ({ onSetupComplete }: { onSetupComplete: () => void }) => {
+function MeetingSetup({ onSetupComplete }: { onSetupComplete: () => void }) {
   const [isCameraDisabled, setIsCameraDisabled] = useState(true);
   const [isMicDisabled, setIsMicDisabled] = useState(false);
 
   const call = useCall();
 
-  if(!call) return null;
+  if (!call) return null;
 
-  useEffect(()=>{
-    if(isCameraDisabled) call.camera.disable();
+  useEffect(() => {
+    if (isCameraDisabled) call.camera.disable();
     else call.camera.enable();
-  },[isCameraDisabled]);
+  }, [isCameraDisabled, call.camera]);
 
   useEffect(() => {
     if (isMicDisabled) call.microphone.disable();
     else call.microphone.enable();
   }, [isMicDisabled, call.microphone]);
 
-  const handleJoin = async () =>{
+  const handleJoin = async () => {
     await call.join();
     onSetupComplete();
-  }
-
+  };
 
   return (
-  <div className="min-h-full mt-5 flex items-center justify-center bg-background/95">
+    <div className="min-h-screen flex items-center justify-center p-6 bg-background/95">
       <div className="w-full max-w-[1200px] mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* vedio preview container */}
+          {/* VIDEO PREVIEW CONTAINER */}
           <Card className="md:col-span-1 p-6 flex flex-col">
             <div>
               <h1 className="text-xl font-semibold mb-1">Camera Preview</h1>
               <p className="text-sm text-muted-foreground">Make sure you look good!</p>
             </div>
 
-            {/* preview container */}
+            {/* VIDEO PREVIEW */}
             <div className="mt-4 flex-1 min-h-[400px] rounded-xl overflow-hidden bg-muted/50 border relative">
-              <div className="absolute w-full inset-0">
-                <VideoPreview className=" min-w-full min-h-full " />
+              <div className="absolute inset-0">
+                <VideoPreview className="h-full w-full" />
               </div>
             </div>
           </Card>
 
-          {/* all the controls */}
+          {/* CARD CONTROLS */}
+
           <Card className="md:col-span-1 p-6">
             <div className="h-full flex flex-col">
-              {/* meeting details  */}
+              {/* MEETING DETAILS  */}
               <div>
                 <h2 className="text-xl font-semibold mb-1">Meeting Details</h2>
                 <p className="text-sm text-muted-foreground break-all">{call.id}</p>
               </div>
 
-              <div className="flex-1 flex my-2 flex-col justify-between">
+              <div className="flex-1 flex flex-col justify-between">
                 <div className="spacey-6 mt-8">
-                  {/* camera controler */}
+                  {/* CAM CONTROL */}
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
@@ -80,8 +78,8 @@ const MeetingSetup = ({ onSetupComplete }: { onSetupComplete: () => void }) => {
                     />
                   </div>
 
-                  {/* mic controler */}
-                  <div className="flex items-center my-2 justify-between">
+                  {/* MIC CONTROL */}
+                  <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
                         <MicIcon className="h-5 w-5 text-primary" />
@@ -99,8 +97,8 @@ const MeetingSetup = ({ onSetupComplete }: { onSetupComplete: () => void }) => {
                     />
                   </div>
 
-                  {/* settings */}
-                  <div className="flex items-center my-2 justify-between">
+                  {/* DEVICE SETTINGS */}
+                  <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
                         <SettingsIcon className="h-5 w-5 text-primary" />
@@ -114,7 +112,7 @@ const MeetingSetup = ({ onSetupComplete }: { onSetupComplete: () => void }) => {
                   </div>
                 </div>
 
-                {/* join meeting btn  */}
+                {/* JOIN BTN */}
                 <div className="space-y-3 mt-8">
                   <Button className="w-full" size="lg" onClick={handleJoin}>
                     Join Meeting
@@ -130,6 +128,5 @@ const MeetingSetup = ({ onSetupComplete }: { onSetupComplete: () => void }) => {
       </div>
     </div>
   );
-};
-
+}
 export default MeetingSetup;

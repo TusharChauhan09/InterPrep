@@ -4,15 +4,14 @@ import { useRouter } from "next/navigation";
 import { api } from "../../convex/_generated/api";
 import { Button } from "./ui/button";
 import toast from "react-hot-toast";
-const EndCallButton = () => {
+
+function EndCallButton() {
   const call = useCall();
   const router = useRouter();
   const { useLocalParticipant } = useCallStateHooks();
   const localParticipant = useLocalParticipant();
 
-  const updateInterviewStatus = useMutation(
-    api.interviews.updateInterviewStatus
-  );
+  const updateInterviewStatus = useMutation(api.interviews.updateInterviewStatus);
 
   const interview = useQuery(api.interviews.getInterviewByStreamCallId, {
     streamCallId: call?.id || "",
@@ -33,10 +32,10 @@ const EndCallButton = () => {
         status: "completed",
       });
 
-      router.push("/arena");
-      toast.success("Meeting ended");
+      router.push("/");
+      toast.success("Meeting ended for everyone");
     } catch (error) {
-      console.error(error);
+      console.log(error);
       toast.error("Failed to end meeting");
     }
   };
@@ -46,6 +45,5 @@ const EndCallButton = () => {
       End Meeting
     </Button>
   );
-};
-
+}
 export default EndCallButton;

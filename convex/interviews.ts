@@ -26,6 +26,22 @@ export const getMyInterviews = query({
   },
 });
 
+export const getInterviewsByInterviewer = query({
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) return [];
+
+    const interviews = await ctx.db
+      .query("interviews")
+      .collect();
+
+    // Filter interviews where the current user is in the interviewerIds array
+    return interviews.filter(interview => 
+      interview.interviewerIds.includes(identity.subject)
+    );
+  },
+});
+
 export const getInterviewByStreamCallId = query({
   args: { streamCallId: v.string() },
   handler: async (ctx, args) => {
@@ -52,6 +68,25 @@ export const createInterview = mutation({
 
     return await ctx.db.insert("interviews", {
       ...args,
+    });
+  },
+});
+
+export const updateInterviewCandidate = mutation({
+  args: {
+    streamCallId: v.string(),
+    candidateId: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const interview = await ctx.db
+      .query("interviews")
+      .withIndex("by_stream_call_id", (q) => q.eq("streamCallId", args.streamCallId))
+      .first();
+    
+    if (!interview) return null;
+    
+    return await ctx.db.patch(interview._id, {
+      candidateId: args.candidateId,
     });
   },
 });

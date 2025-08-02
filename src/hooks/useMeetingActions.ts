@@ -15,8 +15,7 @@ const useMeetingActions = () => {
 
       await call.getOrCreate({
         data: {
-          //@ts-ignore
-          starts_at: new Date().toISOString,
+          starts_at: new Date().toISOString(),
           custom: {
             description: "Instant Meeting",
           },

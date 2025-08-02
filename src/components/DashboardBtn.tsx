@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { Button } from "./ui/button";
 import { LayoutDashboard } from 'lucide-react';
-import { useUserRole } from "../hooks/useuserRole";
+import { useUserRole } from '@/hooks/useUserRole';
 
 const DashboardBtn = () => {
   const { isCandidate , isInterviewer , isLoading } =  useUserRole();

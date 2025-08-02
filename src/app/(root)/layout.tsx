@@ -1,9 +1,9 @@
-import StreamClientProvider from "@/components/providers/StreamClientProvider"
+import StreamClientProvider from "@/components/providers/StreamClientProvider";
 
 const Layout = ({children} : { children : React.ReactNode}) => {
   return (
     <StreamClientProvider>
-        {children}
+      {children}
     </StreamClientProvider>
   );
 }
