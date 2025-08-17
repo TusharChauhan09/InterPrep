@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation"; 
+import { useRouter } from "next/navigation";
 
-import { useUserRole } from "@/hooks/useuserRole";
+import { useUserRole } from "@/hooks/useUserRole"; 
 import { QUICK_ACTIONS } from "@/constants";
 import { useQuery } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
@@ -13,7 +13,6 @@ import MeetingModal from "@/components/MeetingModal";
 import LoaderUI from "@/components/LoaderUI";
 
 const ArenaPage = () => {
-  
   const router = useRouter();
 
   const { isInterviewer, isCandidate, isLoading } = useUserRole();
@@ -21,11 +20,10 @@ const ArenaPage = () => {
   const interview = useQuery(api.interviews.getMyInterviews);
 
   const [showModal, setShowModal] = useState(false);
-  const [modalType, setModalType] = useState<"start"|"join">();
+  const [modalType, setModalType] = useState<"start" | "join">();
 
-
-  const handleQuickAction = (title : string) => {
-    switch(title){
+  const handleQuickAction = (title: string) => {
+    switch (title) {
       case "New Call":
         setModalType("start");
         setShowModal(true);
@@ -38,9 +36,9 @@ const ArenaPage = () => {
         router.push(`/${title.toLowerCase()}`);
         break;
     }
-  }
+  };
 
-  if(isLoading) return <LoaderUI />
+  if (isLoading) return <LoaderUI />;
 
   return (
     <div className="container max-w-7xl mx-auto p-6">

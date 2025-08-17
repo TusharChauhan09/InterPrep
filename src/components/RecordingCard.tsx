@@ -48,7 +48,7 @@ function RecordingCard({ recording }: { recording: CallRecording }) {
 
       <CardContent>
         <div
-          className="w-full aspect-video bg-muted/50 rounded-lg flex items-center justify-center cursor-pointer group"
+          className="w-full aspect-video bg-gray-600 rounded-lg flex items-center justify-center cursor-pointer group "
           onClick={() => window.open(recording.url, "_blank")}
         >
           <div className="size-12 rounded-full bg-background/90 flex items-center justify-center group-hover:bg-primary transition-colors">

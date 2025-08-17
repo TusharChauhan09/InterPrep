@@ -12,9 +12,9 @@ const DashboardBtn = () => {
 
   return (
     <Link href={'/dashboard'}>
-      <Button className="font-medium border-1">
-        <LayoutDashboard className="" />
-        Dashboard
+      <Button className="font-medium border-1 flex hover:cursor-pointer">
+        <LayoutDashboard/>
+        <span className='hidden md:block '>Dashboard</span>
       </Button>
     </Link>
   )

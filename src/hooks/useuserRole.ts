@@ -2,19 +2,18 @@ import { useUser } from "@clerk/nextjs";
 import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 
-
 export const useUserRole = () => {
-    const { user } = useUser();
-    
-    const userData = useQuery(api.users.getUserByClerkId,{
-        clerkId: user?.id || ""
-    })
+  const { user } = useUser();
 
-    const isLoading = userData === undefined;
+  const userData = useQuery(api.users.getUserByClerkId, {
+    clerkId: user?.id || "",
+  });
 
-    return {
-        isLoading,
-        isInterviewer: userData?.role === "interviewer",
-        isCandidate: userData?.role === "candidate",
-    }
-}
+  const isLoading = userData === undefined;
+
+  return {
+    isLoading,
+    isInterviewer: userData?.role === "interviewer",
+    isCandidate: userData?.role === "candidate",
+  };
+};
