@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Anton, Inter, Space_Mono } from "next/font/google";
 
 import "./globals.css";
 
@@ -24,6 +24,24 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const anton = Anton({
+  variable: "--font-anton",
+  weight: "400",
+  subsets: ["latin"],
+});
+
+const inter = Inter({
+  variable: "--font-inter",
+  subsets: ["latin"],
+  weight: ["400", "600"],
+});
+
+const spaceMono = Space_Mono({
+  variable: "--font-space-mono",
+  subsets: ["latin"],
+  weight: ["400", "700"],
+});
+
 export const metadata: Metadata = {
   title: "InterPrep - Master Your Interviews",
   description: "Your ultimate platform for interview success. Practice coding interviews, get expert feedback, and land your dream job.",
@@ -38,7 +56,7 @@ export default function RootLayout({
     <ConvexClerkProvider>
       <html lang="en" suppressHydrationWarning>
         <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+          className={`${geistSans.variable} ${geistMono.variable} ${anton.variable} ${inter.variable} ${spaceMono.variable} antialiased`}
         >
           <ThemeProvider
             attribute="class"
@@ -46,10 +64,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <div>
-              <NavBar />
-              <main className="px-4 sm:px-6 lg:px-8">{children}</main>
-            </div>
+            {children}
           </ThemeProvider>
           <Toaster />
         </body>
