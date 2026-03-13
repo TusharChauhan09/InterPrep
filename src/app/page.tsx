@@ -17,6 +17,7 @@ const Home = () => {
 
   const [mounted, setMounted] = useState(false);
   const [latency, setLatency] = useState(12);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const navRef = useRef<HTMLElement>(null);
   const heroSubRef = useRef<HTMLParagraphElement>(null);
@@ -294,14 +295,25 @@ const Home = () => {
       {/* ===== NAV ===== */}
       <nav className="lp-nav" ref={navRef}>
         <Link href="/" className="lp-logo">INTERPREP</Link>
+
+        {/* Desktop nav links (hidden on mobile) */}
         <div className="lp-nav-links">
           <span className="lp-nav-pill">v4.0.2</span>
           <a href="#sticky-features">Platform</a>
           <a href="#cards-section">Solutions</a>
           <a href="#timeline-section">How It Works</a>
           <a href="#stats">Stats</a>
+          <SignedOut>
+            <SignInButton>
+              <button className="lp-magnetic-btn">
+                <span>Sign In</span>
+              </button>
+            </SignInButton>
+          </SignedOut>
+        </div>
 
-          {/* Theme toggle (new design style) */}
+        {/* Always-visible nav items (theme, dashboard, profile, get started, hamburger) */}
+        <div className="lp-nav-always">
           <button
             className="lp-theme-toggle"
             onClick={toggleTheme}
@@ -314,28 +326,49 @@ const Home = () => {
             </div>
           </button>
 
-          {/* Auth buttons */}
           <SignedIn>
             <DashboardBtn />
             <UserButton />
           </SignedIn>
-          <SignedOut>
-            <SignInButton>
-              <button className="lp-magnetic-btn">
-                <span>Sign In</span>
-              </button>
-            </SignInButton>
-          </SignedOut>
-        </div>
 
-        {/* Primary CTA in nav */}
+          <button
+            className="lp-magnetic-btn lp-nav-get-started-desktop"
+            onClick={() => router.push("/arena")}
+          >
+            <span>Get Started</span>
+          </button>
+
+          {/* Hamburger (mobile only) */}
+          <button
+            className={`lp-hamburger ${menuOpen ? "open" : ""}`}
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Toggle menu"
+          >
+            <span /><span /><span />
+          </button>
+        </div>
+      </nav>
+
+      {/* ===== MOBILE MENU ===== */}
+      <div className={`lp-mobile-menu ${menuOpen ? "open" : ""}`}>
+        <a href="#sticky-features" onClick={() => setMenuOpen(false)}>Platform</a>
+        <a href="#cards-section" onClick={() => setMenuOpen(false)}>Solutions</a>
+        <a href="#timeline-section" onClick={() => setMenuOpen(false)}>How It Works</a>
+        <a href="#stats" onClick={() => setMenuOpen(false)}>Stats</a>
+        <SignedOut>
+          <SignInButton>
+            <button className="lp-magnetic-btn" onClick={() => setMenuOpen(false)}>
+              <span>Sign In</span>
+            </button>
+          </SignInButton>
+        </SignedOut>
         <button
-          className="lp-magnetic-btn"
-          onClick={() => router.push("/arena")}
+          className="lp-magnetic-btn lp-nav-get-started-mobile"
+          onClick={() => { router.push("/arena"); setMenuOpen(false); }}
         >
           <span>Get Started</span>
         </button>
-      </nav>
+      </div>
 
       {/* ===== HERO ===== */}
       <section className="lp-hero">
@@ -346,13 +379,10 @@ const Home = () => {
           <span>LATENCY: <span>{latency}ms</span></span>
           <span className="lp-blink">[ REC ● ACTIVE ]</span>
         </div>
-        <div className="lp-hero-title-container">
+        <div className="lp-hero-title-container mt-2">
           <h1 className="lp-massive-text lp-solid-text">{splitText("INTER")}</h1>
           <h1 className="lp-massive-text">{splitText("PREP")}</h1>
-          <p className="lp-hero-subtitle" ref={heroSubRef}>
-            The ultimate performance environment.
-          </p>
-          <div className="lp-hero-cta-group" ref={heroCtaRef}>
+          <div className="lp-hero-cta-group mb-2" ref={heroCtaRef}>
             <button
               className="lp-magnetic-btn"
               onClick={() => router.push("/arena")}
@@ -368,10 +398,6 @@ const Home = () => {
             </Link>
           </div>
         </div>
-        <div className="lp-hero-scroll-indicator">
-          <div className="lp-scroll-line" />
-          <span>Scroll</span>
-        </div>
         <div className="lp-svg-bg-container">
           <svg width="800" height="800" viewBox="0 0 800 800" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="400" cy="400" r="300" stroke="#333" strokeWidth="1" strokeDasharray="4 4" />
@@ -383,7 +409,7 @@ const Home = () => {
       </section>
 
       {/* ===== MARQUEE ===== */}
-      <div className="lp-marquee-wrapper">
+      <div className="lp-marquee-wrapper mt-4">
         <div className="lp-marquee-content">
           LIVE CODE EDITOR // SMART SCHEDULING // VIDEO CONFERENCING // LOW LATENCY // ROLE DASHBOARDS // LIVE CODE EDITOR // SMART SCHEDULING // VIDEO CONFERENCING // LOW LATENCY // ROLE DASHBOARDS //&nbsp;
         </div>
