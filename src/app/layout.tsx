@@ -12,7 +12,7 @@ import ConvexClerkProvider from "@/components/providers/ConvexClerkProvider";
 
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 
-import { Toaster } from "react-hot-toast";
+import CustomToaster from "@/components/CustomToaster";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -66,7 +66,7 @@ export default function RootLayout({
           >
             {children}
           </ThemeProvider>
-          <Toaster />
+          <CustomToaster />
         </body>
       </html>
     </ConvexClerkProvider>

@@ -17,13 +17,23 @@ function MeetingPage() {
 
   const [isSetupComplete, setIsSetupComplete] = useState(false);
 
-
   if (!isLoaded || isCallLoading) return <LoaderUI />;
 
   if (!call) {
     return (
-      <div className="h-screen flex items-center justify-center">
-        <p className="text-2xl font-semibold">Meeting not found</p>
+      <div className="h-screen flex flex-col items-center justify-center gap-4">
+        <h1
+          className="text-5xl uppercase"
+          style={{ fontFamily: "var(--font-anton, 'Anton', sans-serif)" }}
+        >
+          Not Found
+        </h1>
+        <p
+          className="text-xs uppercase tracking-[0.15em] text-muted-foreground"
+          style={{ fontFamily: "var(--font-space-mono, 'Space Mono', monospace)" }}
+        >
+          This meeting does not exist
+        </p>
       </div>
     );
   }

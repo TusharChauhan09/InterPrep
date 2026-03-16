@@ -1,9 +1,7 @@
 import { DeviceSettings, useCall, VideoPreview } from "@stream-io/video-react-sdk";
 import { useEffect, useState } from "react";
-import { Card } from "./ui/card";
-import { CameraIcon, MicIcon, SettingsIcon } from "lucide-react";
+import { CameraIcon, MicIcon, SettingsIcon, ArrowRightIcon } from "lucide-react";
 import { Switch } from "./ui/switch";
-import { Button } from "./ui/button";
 
 function MeetingSetup({ onSetupComplete }: { onSetupComplete: () => void }) {
   const [isCameraDisabled, setIsCameraDisabled] = useState(true);
@@ -28,102 +26,123 @@ function MeetingSetup({ onSetupComplete }: { onSetupComplete: () => void }) {
     onSetupComplete();
   };
 
+  const monoFont = { fontFamily: "var(--font-space-mono, 'Space Mono', monospace)" };
+  const antonFont = { fontFamily: "var(--font-anton, 'Anton', sans-serif)" };
+
   return (
-    <div className="min-h-screen flex items-center justify-center p-6 bg-background/95">
+    <div className="min-h-screen flex items-center justify-center p-6 bg-background">
+      <div className="app-noise-overlay" />
       <div className="w-full max-w-[1200px] mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* VIDEO PREVIEW CONTAINER */}
-          <Card className="md:col-span-1 p-6 flex flex-col">
-            <div>
-              <h1 className="text-xl font-semibold mb-1">Camera Preview</h1>
-              <p className="text-sm text-muted-foreground">Make sure you look good!</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-0 border border-border overflow-hidden">
+          {/* VIDEO PREVIEW */}
+          <div className="md:col-span-1 flex flex-col bg-card">
+            <div className="p-5 border-b border-border">
+              <h1
+                className="text-2xl uppercase"
+                style={antonFont}
+              >
+                Camera Preview
+              </h1>
+              <p className="mono-label mt-1">Make sure you look good</p>
             </div>
 
-            {/* VIDEO PREVIEW */}
-            <div className="mt-4 flex-1 min-h-[400px] rounded-xl overflow-hidden bg-muted/50 border relative">
+            <div className="flex-1 min-h-[400px] bg-muted relative">
               <div className="absolute inset-0">
                 <VideoPreview className="h-full w-full" />
               </div>
             </div>
-          </Card>
+          </div>
 
-          {/* CARD CONTROLS */}
+          {/* CONTROLS */}
+          <div className="md:col-span-1 flex flex-col border-l border-border">
+            <div className="p-5 border-b border-border">
+              <h2
+                className="text-2xl uppercase"
+                style={antonFont}
+              >
+                Meeting Details
+              </h2>
+              <p
+                className="text-xs tracking-[0.05em] text-muted-foreground break-all mt-1"
+                style={monoFont}
+              >
+                {call.id}
+              </p>
+            </div>
 
-          <Card className="md:col-span-1 p-6">
-            <div className="h-full flex flex-col">
-              {/* MEETING DETAILS  */}
-              <div>
-                <h2 className="text-xl font-semibold mb-1">Meeting Details</h2>
-                <p className="text-sm text-muted-foreground break-all">{call.id}</p>
+            <div className="flex-1 flex flex-col justify-between p-5">
+              <div className="space-y-5">
+                {/* Camera control */}
+                <div className="flex items-center justify-between py-3 border-b border-border">
+                  <div className="flex items-center gap-3">
+                    <div className="h-10 w-10 border border-border flex items-center justify-center">
+                      <CameraIcon className="h-4 w-4" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold">Camera</p>
+                      <p className={`mono-label ${isCameraDisabled ? "!text-red" : "!text-emerald"}`}>
+                        {isCameraDisabled ? "● Disabled" : "● Enabled"}
+                      </p>
+                    </div>
+                  </div>
+                  <Switch
+                    checked={!isCameraDisabled}
+                    onCheckedChange={(checked) => setIsCameraDisabled(!checked)}
+                  />
+                </div>
+
+                {/* Mic control */}
+                <div className="flex items-center justify-between py-3 border-b border-border">
+                  <div className="flex items-center gap-3">
+                    <div className="h-10 w-10 border border-border flex items-center justify-center">
+                      <MicIcon className="h-4 w-4" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold">Microphone</p>
+                      <p className={`mono-label ${isMicDisabled ? "!text-red" : "!text-emerald"}`}>
+                        {isMicDisabled ? "● Disabled" : "● Enabled"}
+                      </p>
+                    </div>
+                  </div>
+                  <Switch
+                    checked={!isMicDisabled}
+                    onCheckedChange={(checked) => setIsMicDisabled(!checked)}
+                  />
+                </div>
+
+                {/* Device settings */}
+                <div className="flex items-center justify-between py-3">
+                  <div className="flex items-center gap-3">
+                    <div className="h-10 w-10 border border-border flex items-center justify-center">
+                      <SettingsIcon className="h-4 w-4" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold">Settings</p>
+                      <p className="mono-label">Configure devices</p>
+                    </div>
+                  </div>
+                  <DeviceSettings />
+                </div>
               </div>
 
-              <div className="flex-1 flex flex-col justify-between">
-                <div className="spacey-6 mt-8">
-                  {/* CAM CONTROL */}
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
-                        <CameraIcon className="h-5 w-5 text-primary" />
-                      </div>
-                      <div>
-                        <p className="font-medium">Camera</p>
-                        <p className="text-sm text-muted-foreground">
-                          {isCameraDisabled ? "Off" : "On"}
-                        </p>
-                      </div>
-                    </div>
-                    <Switch
-                      checked={!isCameraDisabled}
-                      onCheckedChange={(checked) => setIsCameraDisabled(!checked)}
-                    />
-                  </div>
-
-                  {/* MIC CONTROL */}
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
-                        <MicIcon className="h-5 w-5 text-primary" />
-                      </div>
-                      <div>
-                        <p className="font-medium">Microphone</p>
-                        <p className="text-sm text-muted-foreground">
-                          {isMicDisabled ? "Off" : "On"}
-                        </p>
-                      </div>
-                    </div>
-                    <Switch
-                      checked={!isMicDisabled}
-                      onCheckedChange={(checked) => setIsMicDisabled(!checked)}
-                    />
-                  </div>
-
-                  {/* DEVICE SETTINGS */}
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
-                        <SettingsIcon className="h-5 w-5 text-primary" />
-                      </div>
-                      <div>
-                        <p className="font-medium">Settings</p>
-                        <p className="text-sm text-muted-foreground">Configure devices</p>
-                      </div>
-                    </div>
-                    <DeviceSettings />
-                  </div>
-                </div>
-
-                {/* JOIN BTN */}
-                <div className="space-y-3 mt-8">
-                  <Button className="w-full" size="lg" onClick={handleJoin}>
-                    Join Meeting
-                  </Button>
-                  <p className="text-xs text-center text-muted-foreground">
-                    Do not worry, our team is super friendly! We want you to succeed. 🎉
-                  </p>
-                </div>
+              {/* Join button */}
+              <div className="space-y-3 mt-8">
+                <button
+                  className="w-full h-12 bg-emerald text-emerald-foreground text-xs font-bold uppercase tracking-[0.12em] hover:opacity-90 transition-opacity flex items-center justify-center gap-2 cursor-pointer"
+                  style={monoFont}
+                  onClick={handleJoin}
+                >
+                  Join Meeting
+                  <ArrowRightIcon className="size-3.5" />
+                </button>
+                <p
+                  className="text-center mono-label"
+                >
+                  Do not worry, our team is super friendly! We want you to succeed.
+                </p>
               </div>
             </div>
-          </Card>
+          </div>
         </div>
       </div>
     </div>

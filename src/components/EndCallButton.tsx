@@ -2,7 +2,6 @@ import { useCall, useCallStateHooks } from "@stream-io/video-react-sdk";
 import { useMutation, useQuery } from "convex/react";
 import { useRouter } from "next/navigation";
 import { api } from "../../convex/_generated/api";
-import { Button } from "./ui/button";
 import toast from "react-hot-toast";
 
 function EndCallButton() {
@@ -43,9 +42,13 @@ function EndCallButton() {
   };
 
   return (
-    <Button variant={"destructive"} onClick={endCall}>
-      End Meeting
-    </Button>
+    <button
+      className="h-8 px-4 bg-destructive text-destructive-foreground text-[10px] font-bold uppercase tracking-[0.1em] hover:opacity-90 transition-opacity cursor-pointer"
+      style={{ fontFamily: "var(--font-space-mono, 'Space Mono', monospace)" }}
+      onClick={endCall}
+    >
+      End
+    </button>
   );
 }
 export default EndCallButton;

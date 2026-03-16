@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-import { useUserRole } from "@/hooks/useUserRole"; 
+import { useUserRole } from "@/hooks/useUserRole";
 import { QUICK_ACTIONS } from "@/constants";
 import { useQuery } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
@@ -12,7 +12,6 @@ import { ActionCard } from "@/components/ActionCard";
 import MeetingModal from "@/components/MeetingModal";
 import LoaderUI from "@/components/LoaderUI";
 import MeetingCard from "@/components/MeetingCard";
-import { Loader2Icon } from "lucide-react";
 
 
 const ArenaPage = () => {
@@ -45,11 +44,15 @@ const ArenaPage = () => {
   if (isLoading) return <LoaderUI />;
 
   return (
-    <div className="container max-w-7xl mx-auto p-6">
-      {/* WELCOME SECTION */}
-      <div className="rounded-lg bg-card p-6 border shadow-sm mb-10">
-        <h1 className="text-4xl font-bold">Welcome back!</h1>
-        <p className="text-muted-foreground mt-2">
+    <div className="max-w-[1600px] mx-auto px-6 py-8">
+      <div className="app-noise-overlay" />
+
+      {/* WELCOME HEADER */}
+      <div className="app-page-header">
+        <h1>
+          {isInterviewer ? "Command Center" : "Your Arena"}
+        </h1>
+        <p>
           {isInterviewer
             ? "Manage your interviews and review candidates effectively"
             : "Access your upcoming interviews and preparations"}
@@ -77,16 +80,9 @@ const ArenaPage = () => {
         </>
       ) : (
         <>
-          <div>
-            <h1 className="text-3xl font-bold">Your Interviews</h1>
-            <p className="text-muted-foreground mt-1">View and join your scheduled interviews</p>
-          </div>
-
           <div className="mt-8">
             {interviews === undefined ? (
-              <div className="flex justify-center py-12">
-                <Loader2Icon className="h-8 w-8 animate-spin text-muted-foreground" />
-              </div>
+              <LoaderUI />
             ) : interviews.length > 0 ? (
               <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {interviews.map((interview) => (
@@ -94,8 +90,8 @@ const ArenaPage = () => {
                 ))}
               </div>
             ) : (
-              <div className="text-center py-12 text-muted-foreground">
-                You have no scheduled interviews at the moment
+              <div className="app-empty-state">
+                <p>No scheduled interviews at the moment</p>
               </div>
             )}
           </div>

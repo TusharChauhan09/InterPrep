@@ -1,10 +1,8 @@
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
 import { Input } from "./ui/input";
-import { Button } from "./ui/button";
 
 import useMeetingActions from "@/hooks/useMeetingActions";
-
 
 interface MeetingModalProps {
   isOpen: boolean;
@@ -19,17 +17,15 @@ function MeetingModal({
   title,
   isJoinMeeting,
 }: MeetingModalProps) {
-  
   const [meetingUrl, setMeetingUrl] = useState("");
 
-  const {createInstantMeeting  , joinMeeting} = useMeetingActions();
+  const { createInstantMeeting, joinMeeting } = useMeetingActions();
 
   const handleStart = () => {
-    if(isJoinMeeting){
+    if (isJoinMeeting) {
       const meetingId = meetingUrl.split("/").pop();
-      if(meetingUrl) joinMeeting(meetingId!);
-    }
-    else{
+      if (meetingUrl) joinMeeting(meetingId!);
+    } else {
       createInstantMeeting();
     }
 
@@ -37,32 +33,48 @@ function MeetingModal({
     onClose();
   };
 
+  const monoFont = { fontFamily: "var(--font-space-mono, 'Space Mono', monospace)" };
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>{title}</DialogTitle>
+          <DialogTitle
+            className="text-2xl uppercase"
+            style={{ fontFamily: "var(--font-anton, 'Anton', sans-serif)" }}
+          >
+            {title}
+          </DialogTitle>
         </DialogHeader>
 
-        <div className="space-y-4 pt-4">
+        <div className="space-y-5 pt-4">
           {isJoinMeeting && (
-            <Input
-              placeholder="Paste meeting link here..."
-              value={meetingUrl}
-              onChange={(e) => setMeetingUrl(e.target.value)}
-            />
+            <div className="space-y-2">
+              <label className="mono-label">Meeting Link</label>
+              <Input
+                placeholder="Paste meeting link here..."
+                value={meetingUrl}
+                onChange={(e) => setMeetingUrl(e.target.value)}
+              />
+            </div>
           )}
 
           <div className="flex justify-end gap-3">
-            <Button variant="outline" onClick={onClose}>
+            <button
+              className="h-10 px-5 border border-border bg-background text-xs font-bold uppercase tracking-[0.1em] hover:bg-muted transition-colors cursor-pointer"
+              style={monoFont}
+              onClick={onClose}
+            >
               Cancel
-            </Button>
-            <Button
+            </button>
+            <button
+              className="h-10 px-5 bg-foreground text-background text-xs font-bold uppercase tracking-[0.1em] hover:opacity-90 transition-opacity cursor-pointer disabled:opacity-50"
+              style={monoFont}
               onClick={handleStart}
               disabled={isJoinMeeting && !meetingUrl.trim()}
             >
               {isJoinMeeting ? "Join Meeting" : "Start Meeting"}
-            </Button>
+            </button>
           </div>
         </div>
       </DialogContent>

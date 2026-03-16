@@ -1,12 +1,10 @@
 'use client'
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { ResizablePanel, ResizablePanelGroup, ResizableHandle } from "./ui/resizable";
 import CodeEditor from "./CodeEditor";
-import FloatingVideo from 
-"./FloatingVideo";
+import FloatingVideo from "./FloatingVideo";
 import { CallingState, useCallStateHooks } from "@stream-io/video-react-sdk";
-import { LoaderIcon } from "lucide-react";
+import LoaderUI from "./LoaderUI";
 
 
 function MeetingRoom() {
@@ -14,15 +12,10 @@ function MeetingRoom() {
   const [layout, setLayout] = useState<"grid" | "speaker">("grid");
   const [showParticipants, setShowParticipants] = useState(false);
 
-  //
   const { useCallCallingState } = useCallStateHooks();
   const callingState = useCallCallingState();
-  if( callingState !== CallingState.JOINED){
-    return (
-    <div className="h-[calc(100vh-4rem-1px)] flex items-center justify-center">
-      <LoaderIcon className="h-8 w-8 animate-spin text-muted-foreground" />
-    </div>
-  );
+  if (callingState !== CallingState.JOINED) {
+    return <LoaderUI />;
   }
 
   return (

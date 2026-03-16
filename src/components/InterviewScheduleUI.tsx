@@ -13,7 +13,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "./ui/dialog";
-import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import {
@@ -25,9 +24,10 @@ import {
 } from "./ui/select";
 import UserInfo from "./UserInfo";
 import { Calendar } from "./ui/calendar";
-import { Loader2Icon, XIcon } from "lucide-react";
+import { Loader2Icon, XIcon, ArrowRightIcon } from "lucide-react";
 import { TIME_SLOTS } from "@/constants";
 import MeetingCard from "./MeetingCard";
+import LoaderUI from "./LoaderUI";
 
 export default function InterviewScheduleUI() {
   const client = useStreamVideoClient();
@@ -135,30 +135,42 @@ export default function InterviewScheduleUI() {
     (i) => !formData.interviewerIds.includes(i.clerkId)
   );
 
+  const monoFont = { fontFamily: "var(--font-space-mono, 'Space Mono', monospace)" };
+
   return (
-    <div className="container max-w-7xl mx-auto p-6 space-y-8">
-      <div className="flex items-center justify-between">
-        {/* HEADER INFO */}
+    <div className="max-w-[1600px] mx-auto px-6 py-8 space-y-8">
+      <div className="app-noise-overlay" />
+
+      <div className="app-page-header flex items-end justify-between">
         <div>
-          <h1 className="text-3xl font-bold">Interviews</h1>
-          <p className="text-muted-foreground mt-1">
-            Schedule and manage interviews
-          </p>
+          <h1>Schedule</h1>
+          <p>Schedule and manage interviews</p>
         </div>
 
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
-            <Button size="lg">Schedule Interview</Button>
+            <button
+              className="h-10 px-6 bg-foreground text-background text-xs font-bold uppercase tracking-[0.1em] hover:opacity-90 transition-opacity flex items-center gap-2 cursor-pointer"
+              style={monoFont}
+            >
+              Schedule Interview
+              <ArrowRightIcon className="size-3" />
+            </button>
           </DialogTrigger>
 
           <DialogContent className="sm:max-w-[500px] md:min-w-[700px] h-[calc(100vh-150px)] overflow-auto">
             <DialogHeader>
-              <DialogTitle>Schedule Interview</DialogTitle>
+              <DialogTitle
+                className="text-2xl uppercase"
+                style={{ fontFamily: "var(--font-anton, 'Anton', sans-serif)" }}
+              >
+                Schedule Interview
+              </DialogTitle>
             </DialogHeader>
 
-            <div className=" space-y-4 py-4 ">
+            <div className="space-y-5 py-4">
               <div className="space-y-2">
-                <label className="text-sm font-medium">Title</label>
+                <label className="mono-label">Title</label>
                 <Input
                   placeholder="Interview title"
                   value={formData.title}
@@ -169,7 +181,7 @@ export default function InterviewScheduleUI() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium">Description</label>
+                <label className="mono-label">Description</label>
                 <Textarea
                   placeholder="Interview description"
                   value={formData.description}
@@ -180,9 +192,8 @@ export default function InterviewScheduleUI() {
                 />
               </div>
 
-              {/* choose candiates */}
               <div className="space-y-2">
-                <label className="text-sm font-medium">Candidate</label>
+                <label className="mono-label">Candidate</label>
                 <Select
                   value={formData.candidateId}
                   onValueChange={(candidateId) =>
@@ -198,7 +209,6 @@ export default function InterviewScheduleUI() {
                         key={candidate.clerkId}
                         value={candidate.clerkId}
                       >
-                        {/* {candidate.name} */}
                         <UserInfo user={candidate} />
                       </SelectItem>
                     ))}
@@ -206,14 +216,13 @@ export default function InterviewScheduleUI() {
                 </Select>
               </div>
 
-              {/* choose InterViewers */}
               <div className="space-y-2">
-                <label className="text-sm font-medium">Interviewers</label>
+                <label className="mono-label">Interviewers</label>
                 <div className="flex flex-wrap gap-2 mb-2">
                   {selectedInterviewers.map((interviewer) => (
                     <div
                       key={interviewer.clerkId}
-                      className="inline-flex items-center gap-2 bg-secondary px-2 py-1 rounded-md text-sm"
+                      className="inline-flex items-center gap-2 bg-secondary border border-border px-3 py-1.5 text-sm"
                     >
                       <UserInfo user={interviewer} />
                       {interviewer.clerkId !== user?.id && (
@@ -221,7 +230,7 @@ export default function InterviewScheduleUI() {
                           onClick={() => removeInterviewer(interviewer.clerkId)}
                           className="hover:text-destructive transition-colors"
                         >
-                          <XIcon className="h-4 w-4" />
+                          <XIcon className="h-3.5 w-3.5" />
                         </button>
                       )}
                     </div>
@@ -246,10 +255,9 @@ export default function InterviewScheduleUI() {
                 )}
               </div>
 
-              <div className="flex flex-col min-md:flex-row  gap-4">
-                {/* calender */}
+              <div className="flex flex-col min-md:flex-row gap-4">
                 <div className="space-y-2">
-                  <label className="text-sm font-medium">Date</label>
+                  <label className="mono-label">Date</label>
                   <Calendar
                     mode="single"
                     selected={formData.date}
@@ -257,12 +265,11 @@ export default function InterviewScheduleUI() {
                       date && setFormData({ ...formData, date })
                     }
                     disabled={(date) => date < new Date()}
-                    className="rounded-md border"
+                    className="border border-border"
                   />
                 </div>
-                {/* time */}
                 <div className="space-y-2">
-                  <label className="text-sm font-medium">Time</label>
+                  <label className="mono-label">Time</label>
                   <Select
                     value={formData.time}
                     onValueChange={(time) => setFormData({ ...formData, time })}
@@ -281,41 +288,46 @@ export default function InterviewScheduleUI() {
                 </div>
               </div>
 
-              {/* action btn */}
               <div className="flex justify-end gap-3 pt-4">
-                <Button variant="outline" onClick={() => setOpen(false)}>
+                <button
+                  className="h-10 px-6 border border-border bg-background text-xs font-bold uppercase tracking-[0.1em] hover:bg-muted transition-colors cursor-pointer"
+                  style={monoFont}
+                  onClick={() => setOpen(false)}
+                >
                   Cancel
-                </Button>
-                <Button onClick={scheduleMeeting} disabled={isCreating}>
+                </button>
+                <button
+                  className="h-10 px-6 bg-foreground text-background text-xs font-bold uppercase tracking-[0.1em] hover:opacity-90 transition-opacity flex items-center gap-2 cursor-pointer disabled:opacity-50"
+                  style={monoFont}
+                  onClick={scheduleMeeting}
+                  disabled={isCreating}
+                >
                   {isCreating ? (
                     <>
-                      <Loader2Icon className="mr-2 size-4 animate-spin" />
+                      <Loader2Icon className="size-3.5 animate-spin" />
                       Scheduling...
                     </>
                   ) : (
                     "Schedule Interview"
                   )}
-                </Button>
+                </button>
               </div>
             </div>
           </DialogContent>
         </Dialog>
       </div>
+
       {!interviews ? (
-        <div className="flex justify-center py-12">
-          <Loader2Icon className="size-8 animate-spin text-muted-foreground" />
-        </div>
+        <LoaderUI />
       ) : interviews.length > 0 ? (
-        <div className="spacey-4">
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {interviews.map((interview) => (
-              <MeetingCard key={interview._id} interview={interview} />
-            ))}
-          </div>
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {interviews.map((interview) => (
+            <MeetingCard key={interview._id} interview={interview} />
+          ))}
         </div>
       ) : (
-        <div className="text-center py-12 text-muted-foreground">
-          No interviews scheduled
+        <div className="app-empty-state">
+          <p>No interviews scheduled</p>
         </div>
       )}
     </div>

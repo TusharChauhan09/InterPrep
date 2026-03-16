@@ -1,54 +1,45 @@
 "use client";
 
 import { ThemeToggle } from "./ThemeToggle";
-import { useThemeMode } from "@/hooks/useThemeMode";
-import { Button } from "./ui/button";
 import {
   SignedIn,
   SignedOut,
-  SignIn,
   SignInButton,
   UserButton,
 } from "@clerk/nextjs";
 import DashboardBtn from "./DashboardBtn";
-import dark from "../../Public/dark.png";
-import light from "../../Public/light.png";
-import Image from "next/image";
 import Link from "next/link";
 
 const NavBar = () => {
-  const theme = useThemeMode();
   return (
-    <nav className=" mx-4 my-2 border-2 rounded-xl  ">
-      <div className="flex h-15 justify-between item-center px-4 conatiner mx-auto">
-        {/* left : LOGO */}
-        <div className=" flex justify-center items-center ">
-          <Link href={"./"}>
-            {theme === "dark" && (
-              <Image src={dark} alt={"dark logo"} className="size-25" />
-            )}
-            {theme === "light" && (
-              <Image src={light} alt={"light logo"} className="size-25" />
-            )}
-          </Link>
-        </div>
+    <nav className="sticky top-0 z-50 w-full border-b border-border bg-background/80 backdrop-blur-xl transition-all">
+      <div className="flex h-14 items-center justify-between px-6 max-w-[1600px] mx-auto">
+        {/* Logo */}
+        <Link
+          href="/"
+          className="text-lg tracking-[0.15em] uppercase font-bold hover-border-animate pb-0.5"
+          style={{ fontFamily: "var(--font-anton, 'Anton', sans-serif)" }}
+        >
+          INTERPREP
+        </Link>
 
-        {/* right : functions */}
-        <div className="flex items-center gap-5">
+        {/* Right side */}
+        <div className="flex items-center gap-4">
           <SignedIn>
-            <div className=" flex items-center gap-5 ">
-              <DashboardBtn />
-              <UserButton />
-            </div>
+            <DashboardBtn />
+            <UserButton />
           </SignedIn>
           <SignedOut>
-            <Button>
-              <SignInButton>Sign in</SignInButton>
-            </Button>
+            <SignInButton>
+              <button
+                className="h-9 px-5 text-xs font-bold uppercase tracking-[0.1em] bg-foreground text-background hover:opacity-90 transition-opacity cursor-pointer"
+                style={{ fontFamily: "var(--font-space-mono, 'Space Mono', monospace)" }}
+              >
+                Sign In
+              </button>
+            </SignInButton>
           </SignedOut>
-          <div>
-            <ThemeToggle />
-          </div>
+          <ThemeToggle />
         </div>
       </div>
     </nav>

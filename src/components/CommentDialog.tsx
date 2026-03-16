@@ -3,7 +3,6 @@ import { Id } from "../../convex/_generated/dataModel";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import toast from "react-hot-toast";
-import { Label } from "./ui/label";
 import { MessageSquareIcon, StarIcon } from "lucide-react";
 import {
   Dialog,
@@ -13,8 +12,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "./ui/dialog";
-import { Button } from "./ui/button";
-import { Badge } from "./ui/badge";
 import { ScrollArea } from "./ui/scroll-area";
 import { getInterviewerInfo } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
@@ -55,7 +52,7 @@ function CommentDialog({ interviewId }: { interviewId: Id<"interviews"> }) {
       {[1, 2, 3, 4, 5].map((starValue) => (
         <StarIcon
           key={starValue}
-          className={`h-4 w-4 ${starValue <= rating ? "fill-primary text-primary" : "text-muted-foreground"}`}
+          className={`h-3.5 w-3.5 ${starValue <= rating ? "fill-amber text-amber" : "text-border"}`}
         />
       ))}
     </div>
@@ -63,54 +60,65 @@ function CommentDialog({ interviewId }: { interviewId: Id<"interviews"> }) {
 
   if (existingComments === undefined || users === undefined) return null;
 
+  const monoFont = { fontFamily: "var(--font-space-mono, 'Space Mono', monospace)" };
+
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      {/* TRIGGER BUTTON */}
       <DialogTrigger asChild>
-        <Button className="w-full dark:bg-white bg-black ">
-          <MessageSquareIcon className="h-4 w-4 mr-2" />
+        <button
+          className="w-full h-9 border border-border bg-background text-xs font-bold uppercase tracking-[0.1em] hover:bg-foreground hover:text-background transition-all flex items-center justify-center gap-2 cursor-pointer"
+          style={monoFont}
+        >
+          <MessageSquareIcon className="h-3 w-3" />
           Add Comment
-        </Button>
+        </button>
       </DialogTrigger>
 
       <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
-          <DialogTitle>Interview Comment</DialogTitle>
+          <DialogTitle
+            className="text-2xl uppercase"
+            style={{ fontFamily: "var(--font-anton, 'Anton', sans-serif)" }}
+          >
+            Interview Comment
+          </DialogTitle>
         </DialogHeader>
 
         <div className="space-y-6">
           {existingComments.length > 0 && (
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <h4 className="text-sm font-medium">Previous Comments</h4>
-                <Badge variant="outline">
+                <span className="mono-label">Previous Comments</span>
+                <span
+                  className="text-[10px] uppercase tracking-[0.15em] px-2 py-0.5 border border-border text-muted-foreground"
+                  style={monoFont}
+                >
                   {existingComments.length} Comment{existingComments.length !== 1 ? "s" : ""}
-                </Badge>
+                </span>
               </div>
 
-              {/* DISPLAY EXISTING COMMENTS */}
               <ScrollArea className="h-[240px]">
-                <div className="space-y-4">
+                <div className="space-y-3">
                   {existingComments.map((comment, index) => {
                     const interviewer = getInterviewerInfo(users, comment.interviewerId);
                     return (
-                      <div key={index} className="rounded-lg border p-4 space-y-3">
+                      <div key={index} className="border border-border p-4 space-y-3">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
-                            <Avatar className="h-8 w-8">
+                            <Avatar className="h-7 w-7 rounded-none border border-border">
                               <AvatarImage src={interviewer.image} />
-                              <AvatarFallback>{interviewer.initials}</AvatarFallback>
+                              <AvatarFallback className="rounded-none text-[10px] font-bold">{interviewer.initials}</AvatarFallback>
                             </Avatar>
                             <div>
-                              <p className="text-sm font-medium">{interviewer.name}</p>
-                              <p className="text-xs text-muted-foreground">
-                                {format(comment._creationTime, "MMM d, yyyy • h:mm a")}
+                              <p className="text-sm font-semibold">{interviewer.name}</p>
+                              <p className="mono-label">
+                                {format(comment._creationTime, "MMM d, yyyy")}
                               </p>
                             </div>
                           </div>
                           {renderStars(comment.rating)}
                         </div>
-                        <p className="text-sm text-muted-foreground">{comment.content}</p>
+                        <p className="text-sm text-muted-foreground leading-relaxed">{comment.content}</p>
                       </div>
                     );
                   })}
@@ -120,9 +128,8 @@ function CommentDialog({ interviewId }: { interviewId: Id<"interviews"> }) {
           )}
 
           <div className="space-y-4">
-            {/* RATING */}
             <div className="space-y-2">
-              <Label>Rating</Label>
+              <label className="mono-label">Rating</label>
               <Select value={rating} onValueChange={setRating}>
                 <SelectTrigger>
                   <SelectValue placeholder="Select rating" />
@@ -137,9 +144,8 @@ function CommentDialog({ interviewId }: { interviewId: Id<"interviews"> }) {
               </Select>
             </div>
 
-            {/* COMMENT */}
             <div className="space-y-2">
-              <Label>Your Comment</Label>
+              <label className="mono-label">Your Comment</label>
               <Textarea
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
@@ -150,12 +156,21 @@ function CommentDialog({ interviewId }: { interviewId: Id<"interviews"> }) {
           </div>
         </div>
 
-        {/* BUTTONS */}
         <DialogFooter>
-          <Button variant="outline" onClick={() => setIsOpen(false)}>
+          <button
+            className="h-10 px-5 border border-border bg-background text-xs font-bold uppercase tracking-[0.1em] hover:bg-muted transition-colors cursor-pointer"
+            style={monoFont}
+            onClick={() => setIsOpen(false)}
+          >
             Cancel
-          </Button>
-          <Button onClick={handleSubmit}>Submit</Button>
+          </button>
+          <button
+            className="h-10 px-5 bg-foreground text-background text-xs font-bold uppercase tracking-[0.1em] hover:opacity-90 transition-opacity cursor-pointer"
+            style={monoFont}
+            onClick={handleSubmit}
+          >
+            Submit
+          </button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

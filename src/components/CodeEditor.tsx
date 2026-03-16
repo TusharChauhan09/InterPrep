@@ -13,7 +13,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { AlertCircleIcon, BookIcon, LightbulbIcon } from "lucide-react";
 import Editor from "@monaco-editor/react";
 import { useMedia } from "use-media";
@@ -39,9 +38,12 @@ const CodeEditor = () => {
     setCode(selectedQuestion.starterCode[newLanguage]);
   };
 
+  const monoFont = { fontFamily: "var(--font-space-mono, 'Space Mono', monospace)" };
+  const antonFont = { fontFamily: "var(--font-anton, 'Anton', sans-serif)" };
+
   return (
     <div className="w-full h-full">
-      <ResizablePanelGroup direction={isSmallScreen ? "vertical" : "horizontal"} >
+      <ResizablePanelGroup direction={isSmallScreen ? "vertical" : "horizontal"}>
         <ResizablePanel
           defaultSize={45}
           minSize={35}
@@ -54,12 +56,13 @@ const CodeEditor = () => {
                 {/* HEADER */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                   <div className="space-y-1">
-                    <div className="flex items-center gap-2">
-                      <h2 className="text-2xl font-semibold tracking-tight">
-                        {selectedQuestion.title}
-                      </h2>
-                    </div>
-                    <p className="text-sm text-muted-foreground">
+                    <h2
+                      className="text-3xl uppercase leading-tight"
+                      style={antonFont}
+                    >
+                      {selectedQuestion.title}
+                    </h2>
+                    <p className="mono-label">
                       Choose your language and solve the problem
                     </p>
                   </div>
@@ -85,7 +88,6 @@ const CodeEditor = () => {
                       onValueChange={handleLanguageChange}
                     >
                       <SelectTrigger className="w-[150px]">
-                        {/* SELECT VALUE */}
                         <SelectValue>
                           <div className="flex items-center gap-2">
                             <img
@@ -97,7 +99,6 @@ const CodeEditor = () => {
                           </div>
                         </SelectValue>
                       </SelectTrigger>
-                      {/* SELECT CONTENT */}
                       <SelectContent>
                         {LANGUAGES.map((lang) => (
                           <SelectItem key={lang.id} value={lang.id}>
@@ -116,35 +117,39 @@ const CodeEditor = () => {
                   </div>
                 </div>
 
-                {/* PROBLEM DESC. */}
-                <Card>
-                  <CardHeader className="flex flex-row items-center gap-2">
-                    <BookIcon className="h-5 w-5 text-primary/80" />
-                    <CardTitle>Problem Description</CardTitle>
-                  </CardHeader>
-                  <CardContent className="text-sm leading-relaxed">
-                    <div className="prose prose-sm dark:prose-invert max-w-none">
-                      <p className="whitespace-pre-line">
-                        {selectedQuestion.description}
-                      </p>
-                    </div>
-                  </CardContent>
-                </Card>
+                {/* PROBLEM DESC */}
+                <div className="border border-border">
+                  <div className="flex items-center gap-2 px-5 py-3 border-b border-border bg-card">
+                    <BookIcon className="h-4 w-4" />
+                    <span className="mono-label">Problem Description</span>
+                  </div>
+                  <div className="px-5 py-4 text-sm leading-relaxed">
+                    <p className="whitespace-pre-line">
+                      {selectedQuestion.description}
+                    </p>
+                  </div>
+                </div>
 
-                {/* PROBLEM EXAMPLES */}
-                <Card>
-                  <CardHeader className="flex flex-row items-center gap-2">
-                    <LightbulbIcon className="h-5 w-5 text-yellow-500" />
-                    <CardTitle>Examples</CardTitle>
-                  </CardHeader>
-                  <CardContent>
+                {/* EXAMPLES */}
+                <div className="border border-border">
+                  <div className="flex items-center gap-2 px-5 py-3 border-b border-border bg-card">
+                    <LightbulbIcon className="h-4 w-4" />
+                    <span className="mono-label">Examples</span>
+                  </div>
+                  <div className="px-5 py-4">
                     <div className="space-y-4">
                       {selectedQuestion.examples.map((example, index) => (
                         <div key={index} className="space-y-2">
-                          <p className="font-medium text-sm">
+                          <p
+                            className="text-xs font-bold uppercase tracking-[0.1em]"
+                            style={monoFont}
+                          >
                             Example {index + 1}:
                           </p>
-                          <pre className="bg-muted/50 p-3 rounded-lg text-sm font-mono whitespace-pre-wrap">
+                          <pre
+                            className="bg-muted p-3 text-sm whitespace-pre-wrap border border-border"
+                            style={monoFont}
+                          >
                             <div>Input: {example.input}</div>
                             <div>Output: {example.output}</div>
                             {example.explanation && (
@@ -156,28 +161,32 @@ const CodeEditor = () => {
                         </div>
                       ))}
                     </div>
-                  </CardContent>
-                </Card>
+                  </div>
+                </div>
 
                 {/* CONSTRAINTS */}
                 {selectedQuestion.constraints && (
-                  <Card>
-                    <CardHeader className="flex flex-row items-center gap-2">
-                      <AlertCircleIcon className="h-5 w-5 text-blue-500" />
-                      <CardTitle>Constraints</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <ul className="list-disc list-inside space-y-1.5 text-sm marker:text-muted-foreground">
+                  <div className="border border-border">
+                    <div className="flex items-center gap-2 px-5 py-3 border-b border-border bg-card">
+                      <AlertCircleIcon className="h-4 w-4" />
+                      <span className="mono-label">Constraints</span>
+                    </div>
+                    <div className="px-5 py-4">
+                      <ul className="space-y-1.5">
                         {selectedQuestion.constraints.map(
                           (constraint, index) => (
-                            <li key={index} className="text-muted-foreground">
-                              {constraint}
+                            <li
+                              key={index}
+                              className="text-sm text-muted-foreground flex items-start gap-2"
+                            >
+                              <span className="text-foreground/30 mt-0.5">-</span>
+                              <span style={monoFont}>{constraint}</span>
                             </li>
                           )
                         )}
                       </ul>
-                    </CardContent>
-                  </Card>
+                    </div>
+                  </div>
                 )}
               </div>
             </div>
@@ -187,9 +196,21 @@ const CodeEditor = () => {
 
         <ResizableHandle withHandle />
 
-        <ResizablePanel defaultSize={55} minSize={35} className="p-3 border m-2 bg-[#1E1E1E] rounded-3xl">
+        <ResizablePanel defaultSize={55} minSize={35} className="border border-border m-1 bg-[#0A0A0A] overflow-hidden">
+          {/* Editor header */}
+          <div className="h-8 border-b border-[#222] bg-[#0A0A0A] flex items-center px-4 gap-2">
+            <div className="w-2 h-2 rounded-full bg-[#333]" />
+            <div className="w-2 h-2 rounded-full bg-[#333]" />
+            <div className="w-2 h-2 rounded-full bg-[#333]" />
+            <span
+              className="ml-auto text-[10px] uppercase tracking-[0.1em] text-[#555]"
+              style={monoFont}
+            >
+              {selectedQuestion.title}.{language === "javascript" ? "js" : language === "python" ? "py" : "java"}
+            </span>
+          </div>
           <Editor
-            height={"100%"}
+            height={"calc(100% - 32px)"}
             defaultLanguage={language}
             language={language}
             theme="vs-dark"
@@ -197,13 +218,14 @@ const CodeEditor = () => {
             onChange={(value) => setCode(value || "")}
             options={{
               minimap: { enabled: false },
-              fontSize: 18,
+              fontSize: 16,
               lineNumbers: "on",
               scrollBeyondLastLine: false,
               automaticLayout: true,
               padding: { top: 16, bottom: 16 },
               wordWrap: "on",
               wrappingIndent: "indent",
+              fontFamily: "'Space Mono', monospace",
             }}
           />
         </ResizablePanel>

@@ -5,7 +5,7 @@ const Layout = ({children} : { children : React.ReactNode}) => {
   return (
     <StreamClientProvider>
       <NavBar />
-      <main className="px-4 sm:px-6 lg:px-8">{children}</main>
+      <main className="min-h-[calc(100vh-3.5rem)]">{children}</main>
     </StreamClientProvider>
   );
 }

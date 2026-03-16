@@ -32,21 +32,25 @@ export const QUICK_ACTIONS = [
     icon: Code2,
     title: "New Call",
     description: "Start an instant call",
-},
+    accent: "emerald",
+  },
   {
     icon: Users,
     title: "Join Interview",
     description: "Enter via invitation link",
+    accent: "blue",
   },
   {
     icon: Calendar,
     title: "Schedule",
     description: "Plan upcoming interviews",
+    accent: "amber",
   },
   {
     icon: Clock,
     title: "Recordings",
     description: "Access past interviews",
+    accent: "red",
   },
 ];
 
