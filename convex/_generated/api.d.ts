@@ -16,6 +16,8 @@ import type {
 import type * as comments from "../comments.js";
 import type * as http from "../http.js";
 import type * as interviews from "../interviews.js";
+import type * as questions from "../questions.js";
+import type * as submissions from "../submissions.js";
 import type * as users from "../users.js";
 
 /**
@@ -30,6 +32,8 @@ declare const fullApi: ApiFromModules<{
   comments: typeof comments;
   http: typeof http;
   interviews: typeof interviews;
+  questions: typeof questions;
+  submissions: typeof submissions;
   users: typeof users;
 }>;
 export declare const api: FilterApi<

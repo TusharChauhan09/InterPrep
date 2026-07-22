@@ -25,9 +25,10 @@ import {
 import UserInfo from "./UserInfo";
 import { Calendar } from "./ui/calendar";
 import { Loader2Icon, XIcon, ArrowRightIcon } from "lucide-react";
-import { TIME_SLOTS } from "@/constants";
 import MeetingCard from "./MeetingCard";
 import LoaderUI from "./LoaderUI";
+import WheelTimePicker from "./ui/WheelTimePicker";
+import QuestionPicker, { QuestionRef } from "./QuestionPicker";
 
 export default function InterviewScheduleUI() {
   const client = useStreamVideoClient();
@@ -43,13 +44,22 @@ export default function InterviewScheduleUI() {
   const candidates = users?.filter((u) => u.role === "candidate");
   const interviewers = users?.filter((u) => u.role === "interviewer");
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    title: string;
+    description: string;
+    date: Date;
+    time: string;
+    candidateId: string;
+    interviewerIds: string[];
+    questions: QuestionRef[];
+  }>({
     title: "",
     description: "",
     date: new Date(),
     time: "09:00",
     candidateId: "",
     interviewerIds: user?.id ? [user.id] : [],
+    questions: [],
   });
 
   const scheduleMeeting = async () => {
@@ -61,7 +71,7 @@ export default function InterviewScheduleUI() {
     setIsCreating(true);
 
     try {
-      const { title, description, date, time, candidateId, interviewerIds } =
+      const { title, description, date, time, candidateId, interviewerIds, questions } =
         formData;
       const [hours, minutes] = time.split(":");
 
@@ -89,6 +99,7 @@ export default function InterviewScheduleUI() {
         streamCallId: id,
         candidateId,
         interviewerIds,
+        questions,
       });
 
       setOpen(false);
@@ -101,6 +112,7 @@ export default function InterviewScheduleUI() {
         time: "09:00",
         candidateId: "",
         interviewerIds: user?.id ? [user.id] : [],
+        questions: [],
       });
     } catch (error) {
       console.error(error);
@@ -270,23 +282,18 @@ export default function InterviewScheduleUI() {
                 </div>
                 <div className="space-y-2">
                   <label className="mono-label">Time</label>
-                  <Select
+                  <WheelTimePicker
                     value={formData.time}
-                    onValueChange={(time) => setFormData({ ...formData, time })}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select time" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {TIME_SLOTS.map((time) => (
-                        <SelectItem key={time} value={time}>
-                          {time}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                    onChange={(time) => setFormData({ ...formData, time })}
+                  />
                 </div>
               </div>
+
+              <QuestionPicker
+                selected={formData.questions}
+                onChange={(questions) => setFormData({ ...formData, questions })}
+              />
+
 
               <div className="flex justify-end gap-3 pt-4">
                 <button

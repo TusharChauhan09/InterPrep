@@ -24,6 +24,17 @@ const DashboardPage = () => {
   const users = useQuery(api.users.getUsers);
   const interviews = useQuery(api.interviews.getAllInterviews);
   const updateStatus = useMutation(api.interviews.updateInterviewStatus);
+  const seedPlatform = useMutation(api.questions.seedPlatform);
+
+  const handleSeed = async () => {
+    try {
+      const res = await seedPlatform({});
+      if (res.seeded === 0) toast("Already seeded", { icon: "ℹ️" });
+      else toast.success(`Seeded ${res.seeded} platform questions`);
+    } catch (e: any) {
+      toast.error(e?.message ?? "Seed failed");
+    }
+  };
 
   const handleStatusUpdate = async (
     interviewId: Id<"interviews">,
@@ -51,15 +62,24 @@ const DashboardPage = () => {
           <h1>Dashboard</h1>
           <p>Review and manage all interview sessions</p>
         </div>
-        <Link href="/schedule">
+        <div className="flex items-center gap-2">
           <button
-            className="h-10 px-6 bg-foreground text-background text-xs font-bold uppercase tracking-[0.1em] hover:opacity-90 transition-opacity flex items-center gap-2 cursor-pointer"
+            onClick={handleSeed}
+            className="h-10 px-4 border border-border bg-background text-xs font-bold uppercase tracking-[0.1em] hover:bg-muted transition-colors cursor-pointer"
             style={{ fontFamily: "var(--font-space-mono, 'Space Mono', monospace)" }}
           >
-            Schedule Interview
-            <ArrowRightIcon className="size-3" />
+            Seed Questions
           </button>
-        </Link>
+          <Link href="/schedule">
+            <button
+              className="h-10 px-6 bg-foreground text-background text-xs font-bold uppercase tracking-[0.1em] hover:opacity-90 transition-opacity flex items-center gap-2 cursor-pointer"
+              style={{ fontFamily: "var(--font-space-mono, 'Space Mono', monospace)" }}
+            >
+              Schedule Interview
+              <ArrowRightIcon className="size-3" />
+            </button>
+          </Link>
+        </div>
       </div>
 
       <div className="space-y-10">
